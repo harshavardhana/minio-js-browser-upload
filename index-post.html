@@ -1,0 +1,48 @@
+<input type="file" id="selector" multiple>
+<button onclick="upload()">Upload</button>
+
+<div id="status">No uploads</div>
+
+<script src="//code.jquery.com/jquery-3.1.0.min.js"></script>
+<script type="text/javascript">
+
+ function upload() {
+   [$('#selector')[0].files].forEach(fileObj => {
+     var file = fileObj[0]
+     // Retrieve a URL from our server.
+     retrieveNewURL(file, obj => {
+       // Upload the file to the server.
+       uploadFile(file, obj)
+     })
+   })
+ }
+
+ // Request to our Node.js server for an upload URL.
+ function retrieveNewURL(file, cb) {
+   $.get(`/presignedUrl?name=${file.name}`, (obj) => {
+     cb(obj)
+   })
+ }
+
+ // Use XMLHttpRequest to upload the file to S3.
+ function uploadFile(file, obj) {
+     var xhr = new XMLHttpRequest ()
+     var objSon = JSON.parse(obj);
+     xhr.open('POST', objSon.urlStr, true);
+
+     var fd = new FormData();
+     Object.entries(objSon.formData).forEach(([key, value]) => {
+         fd.append(key, value);
+     });
+
+     fd.append('file', file);
+     xhr.send(fd);
+
+     xhr.onload = () => {
+       if (xhr.status == 204) {
+         $('#status').text(`Uploaded ${file.name}.`)
+       }
+     }
+ }
+
+</script>

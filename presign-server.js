@@ -10,8 +10,6 @@ var client = new Minio.Client({
 
 // express is a small HTTP server wrapper, but this works with any HTTP server
 const server = require('express')()
-// uuid.v4() generates a unique identifier for each upload
-const uuid = require('node-uuid')
 
 server.get('/presignedUrl', (req, res) => {
     client.presignedPutObject('uploads', req.query.name, (err, url) => {
