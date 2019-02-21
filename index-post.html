@@ -28,10 +28,10 @@
  function uploadFile(file, obj) {
      var xhr = new XMLHttpRequest ()
      var objSon = JSON.parse(obj);
-     xhr.open('POST', objSon.urlStr, true);
+     xhr.open('POST', objSon.urlStr.postURL, true);
 
      var fd = new FormData();
-     Object.entries(objSon.formData).forEach(([key, value]) => {
+     Object.entries(objSon.urlStr.formData).forEach(([key, value]) => {
          fd.append(key, value);
      });
 
