@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "minio": "^7.0.16",
     "node-uuid": "^1.4.8"
   }
